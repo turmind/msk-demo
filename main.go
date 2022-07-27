@@ -35,10 +35,11 @@ func main() {
 	if err := initProducer(); err != nil {
 		logrus.Fatal(err)
 	}
+	logrus.Info("producer start")
 	if err := initComsumer(); err != nil {
 		logrus.Fatal(err)
 	}
-
+	logrus.Info("comsumer start")
 	logrus.Info("demo start.")
 	c := make(chan os.Signal, 1)
 	signal.Notify(c, syscall.SIGINT)
@@ -145,11 +146,13 @@ func GetKafkaAddrs() (kafkaAddrs []string, err error) {
 	kafkaAddrs = make([]string, 0, 10)
 	datas, _, err = conn.Children("/brokers/ids")
 	if err != nil {
+		logrus.Debug("zk ls fail")
 		return
 	}
 	for _, data = range datas {
 		bytes, _, err = conn.Get("/brokers/ids/" + data)
 		if err != nil {
+			logrus.Debug("zk get info fail")
 			return
 		}
 		json.Unmarshal(bytes, &dat)
