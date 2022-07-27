@@ -31,6 +31,7 @@ const (
 func main() {
 	flag.Parse()
 	flag.StringVar(&zk_addrs, "z", "z-1.testmsk.15lq7p.c22.kafka.us-east-1.amazonaws.com:2181,z-3.testmsk.15lq7p.c22.kafka.us-east-1.amazonaws.com:2181,z-2.testmsk.15lq7p.c22.kafka.us-east-1.amazonaws.com:2181", "zookeeper address")
+	logrus.Infof("zk addrs: %s", zk_addrs)
 	addrs = strings.Split(zk_addrs, ",")
 	if err := initProducer(); err != nil {
 		logrus.Fatal(err)
@@ -75,7 +76,7 @@ func handleSuccess() {
 	for {
 		pm = <-producer.Successes()
 		if pm != nil {
-			logrus.Info("producer message success, partition:%d offset:%d key:%v values:%s", pm.Partition, pm.Offset, pm.Key, pm.Value)
+			logrus.Infof("producer message success, partition:%d offset:%d key:%v values:%s", pm.Partition, pm.Offset, pm.Key, pm.Value)
 		}
 	}
 }
@@ -87,7 +88,7 @@ func handleError() {
 	for {
 		err = <-producer.Errors()
 		if err != nil {
-			logrus.Error("producer message error, partition:%d offset:%d key:%v valus:%s error(%v)", err.Msg.Partition, err.Msg.Offset, err.Msg.Key, err.Msg.Value, err.Err)
+			logrus.Errorf("producer message error, partition:%d offset:%d key:%v valus:%s error(%v)", err.Msg.Partition, err.Msg.Offset, err.Msg.Key, err.Msg.Value, err.Err)
 		}
 	}
 }
@@ -116,7 +117,7 @@ func initComsumer() (err error) {
 	}()
 	go func() {
 		for msg := range cg.Messages() {
-			logrus.Info(fmt.Sprintf("deal with topic: %s, partitionId: %d, Offset: %d, Key: %s msg: %s", msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value))
+			logrus.Infof("deal with topic: %s, partitionId: %d, Offset: %d, Key: %s msg: %s", msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
 			cg.CommitUpto(msg)
 		}
 	}()
