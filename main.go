@@ -23,7 +23,7 @@ var (
 )
 
 const (
-	KAFKA_GROUP_NAME                   = "kafka_topic_push_group"
+	KAFKA_GROUP_NAME                   = "kafka_topic_consumer_group"
 	OFFSETS_PROCESSING_TIMEOUT_SECONDS = 10 * time.Second
 	OFFSETS_COMMIT_INTERVAL            = 10 * time.Second
 )
@@ -104,7 +104,6 @@ func initComsumer() (err error) {
 	config.Offsets.Initial = sarama.OffsetNewest
 	config.Offsets.ProcessingTimeout = OFFSETS_PROCESSING_TIMEOUT_SECONDS
 	config.Offsets.CommitInterval = OFFSETS_COMMIT_INTERVAL
-	config.Zookeeper.Chroot = "/"
 	kafkaTopics := []string{"demo-topic"}
 	cg, err := consumergroup.JoinConsumerGroup(KAFKA_GROUP_NAME, kafkaTopics, addrs, config)
 	if err != nil {
