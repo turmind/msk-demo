@@ -116,7 +116,7 @@ func initComsumer() (err error) {
 	}()
 	go func() {
 		for msg := range cg.Messages() {
-			logrus.Infof("deal with topic:%s, partitionId:%d, Offset:%d, Key:%s msg:%s", msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value)
+			logrus.Info(fmt.Sprintf("deal with topic: %s, partitionId: %d, Offset: %d, Key: %s msg: %s", msg.Topic, msg.Partition, msg.Offset, msg.Key, msg.Value))
 			cg.CommitUpto(msg)
 		}
 	}()
