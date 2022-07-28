@@ -58,7 +58,7 @@ func initProducer() (err error) {
 	}
 	logrus.Info(kafkaAddrs)
 	config := sarama.NewConfig()
-	config.Producer.RequiredAcks = sarama.WaitForLocal
+	config.Producer.RequiredAcks = sarama.WaitForAll
 	config.Producer.Partitioner = sarama.NewHashPartitioner
 	config.Producer.Return.Successes = true
 	config.Producer.Return.Errors = true
@@ -112,7 +112,7 @@ func initComsumer() (err error) {
 	}
 	go func() {
 		for err := range cg.Errors() {
-			logrus.Error("consumer error(%v)", err)
+			logrus.Errorf("consumer error(%v)", err)
 		}
 	}()
 	go func() {
