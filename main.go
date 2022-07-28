@@ -30,7 +30,7 @@ const (
 
 func main() {
 	flag.Parse()
-	flag.StringVar(&zk_addrs, "z", "z-1.testmsk.15lq7p.c22.kafka.us-east-1.amazonaws.com:2181,z-3.testmsk.15lq7p.c22.kafka.us-east-1.amazonaws.com:2181,z-2.testmsk.15lq7p.c22.kafka.us-east-1.amazonaws.com:2181", "zookeeper address")
+	flag.StringVar(&zk_addrs, "z", "z-3.testmskprovisioned.r9csym.c22.kafka.us-east-1.amazonaws.com:2181,z-1.testmskprovisioned.r9csym.c22.kafka.us-east-1.amazonaws.com:2181,z-2.testmskprovisioned.r9csym.c22.kafka.us-east-1.amazonaws.com:2181", "zookeeper address")
 	logrus.Infof("zk addrs: %s", zk_addrs)
 	addrs = strings.Split(zk_addrs, ",")
 	if err := initProducer(); err != nil {
