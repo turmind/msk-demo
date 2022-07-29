@@ -29,8 +29,8 @@ const (
 )
 
 func main() {
-	flag.Parse()
 	flag.StringVar(&zk_addrs, "z", "z-3.testmskprovisioned.r9csym.c22.kafka.us-east-1.amazonaws.com:2181,z-1.testmskprovisioned.r9csym.c22.kafka.us-east-1.amazonaws.com:2181,z-2.testmskprovisioned.r9csym.c22.kafka.us-east-1.amazonaws.com:2181", "zookeeper address")
+	flag.Parse()
 	logrus.Infof("zk addrs: %s", zk_addrs)
 	addrs = strings.Split(zk_addrs, ",")
 	if err := initProducer(); err != nil {
@@ -167,14 +167,4 @@ func GetKafkaAddrs() (kafkaAddrs []string, err error) {
 		kafkaAddrs = append(kafkaAddrs, host+":"+port)
 	}
 	return
-}
-
-func ChildrenW(path string) (addr []string, stat *zookeeper.Stat, event <-chan zookeeper.Event, err error) {
-	if conn == nil {
-		conn, _, err = zookeeper.Connect(addrs, 10*time.Second)
-		if err != nil {
-			return
-		}
-	}
-	return conn.ChildrenW(path)
 }
